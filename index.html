@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Construction Material Calculator | Learn & Calculate</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 25px;
+            background: #2c3e50;
+            color: white;
+            border-radius: 12px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+        }
+
+        header h1 {
+            font-size: 2.2rem;
+            margin-bottom: 8px;
+            letter-spacing: 1px;
+        }
+
+        header p {
+            opacity: 0.9;
+            font-size: 1.1rem;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .tag {
+            display: inline-block;
+            background: #e67e22;
+            color: white;
+            padding: 3px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin: 5px 3px;
+        }
+
+        .learn-section {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        .learn-section h2 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .learn-section .icon {
+            font-size: 1.5rem;
+        }
+
+        .material-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .material-card {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #e67e22;
+        }
+
+        .material-card h4 {
+            color: #2c3e50;
+            margin-bottom: 5px;
+            font-size: 0.95rem;
+        }
+
+        .material-card p {
+            font-size: 0.85rem;
+            color: #555;
+            margin-bottom: 3px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+        }
+
+        .card h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #e67e22;
+            font-size: 1.3rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .card h2 .info-toggle {
+            font-size: 0.8rem;
+            background: #2c3e50;
+            color: white;
+            border: none;
+            padding: 5px 12px;
+            border-radius: 15px;
+            cursor: pointer;
+            text-transform: none;
+            letter-spacing: normal;
+        }
+
+        .info-panel {
+            display: none;
+            background: #f0f4f8;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 1px solid #d0d8de;
+        }
+
+        .info-panel.active {
+            display: block;
+        }
+
+        .info-panel h4 {
+            color: #2c3e50;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+        }
+
+        .formula {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 10px 15px;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            margin: 5px 0;
+            position: relative;
+        }
+
+        .formula::before {
+            content: "FORMULA";
+            position: absolute;
+            top: -10px;
+            left: 10px;
+            background: #e67e22;
+            color: white;
+            font-size: 0.65rem;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-family: 'Segoe UI', sans-serif;
+            letter-spacing: 1px;
+        }
+
+        .note {
+            font-size: 0.85rem;
+            color: #555;
+            background: #fff3cd;
+            padding: 8px 12px;
+            border-radius: 6px;
+            border-left: 3px solid #ffc107;
+            margin-top: 8px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #34495e;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #bdc3c7;
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        input[type="number"]:focus {
+            outline: none;
+            border-color: #e67e22;
+        }
+
+        .checkbox-group {
+            margin: 15px 0;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 5px;
+        }
+
+        .checkbox-group label {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+            font-weight: normal;
+            cursor: pointer;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            margin-right: 8px;
+            width: 18px;
+            height: 18px;
+            accent-color: #e67e22;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        button {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-calculate {
+            background: #e67e22;
+            color: white;
+        }
+
+        .btn-calculate:hover {
+            background: #d35400;
+        }
+
+        .btn-reset {
+            background: #95a5a6;
+            color: white;
+        }
+
+        .btn-reset:hover {
+            background: #7f8c8d;
+        }
+
+        .result-box {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border: 2px solid #bdc3c7;
+            border-radius: 5px;
+            min-height: 150px;
+            white-space: pre-line;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            color: #2c3e50;
+            line-height: 1.6;
+        }
+
+        .result-title {
+            font-weight: bold;
+            color: #e67e22;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .step {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .step-number {
+            min-width: 28px;
+            height: 28px;
+            background: #e67e22;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.85rem;
+        }
+
+        .step-content {
+            flex: 1;
+        }
+
+        .step-content p {
+            font-size: 0.9rem;
+            color: #333;
+        }
+
+        @media (max-width: 768px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+            
+            header h1 {
+                font-size: 1.5rem;
+            }
+
+            .material-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            padding: 20px;
+            color: #7f8c8d;
+            font-size: 0.9rem;
+        }
+
+        .nav-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .nav-tab {
+            padding: 10px 20px;
+            background: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            color: #2c3e50;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+        }
+
+        .nav-tab:hover, .nav-tab.active {
+            background: #e67e22;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Construction Material Calculator</h1>
+            <p>Estimate materials for <b>walls</b>, <b>flooring</b>, <b>concrete</b>, and <b>paint</b>. Learn the science behind every number.</p>
+            <div style="margin-top:10px;">
+                <span class="tag">Contracts</span>
+                <span class="tag">Materials</span>
+                <span class="tag">Costing</span>
+                <span class="tag">DIY</span>
+            </div>
+        </header>
+
+        <div class="nav-tabs">
+            <button class="nav-tab active" onclick="showSection('calculators')">Calculators</button>
+            <button class="nav-tab" onclick="showSection('materials')">Material Data</button>
+            <button class="nav-tab" onclick="showSection('formulas')">Formula Guide</button>
+        </div>
+
+        <div id="section-calculators" class="section">
+            <div class="learn-section">
+                <h2><span class="icon">🎓</span> How Construction Estimation Works</h2>
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <p><b>Measure Areas and Volumes:</b> Every material estimate starts with geometry — area for walls/floors, volume for concrete. Always subtract openings like windows and doors.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <p><b>Apply Mix Ratios:</b> Mortar and concrete are never pure cement. Standard ratios like 1:4 (cement:sand) determine how much of each material is needed per cubic meter.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <p><b>Account for Wastage & Bond:</b> Real-world projects add 5&ndash;10% extra for spillage, uneven surfaces, and mortar joint thickness (usually 10&ndash;20mm).</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <p><b>Convert to Usable Units:</b> Cement is sold in 50kg bags, sand in local volumetric units (ela/brass), and tiles in piece counts. Conversion factors bridge the gap.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid">
+                <!-- Wall Section -->
+                <div class="card">
+                    <h2>Wall Material Calculation <button class="info-toggle" onclick="toggleInfo('wallInfo')">Formula</button></h2>
+                    <div class="info-panel" id="wallInfo">
+                        <h4>Wall Construction</h4>
+                        <div class="formula">Bricks = Wall Area ÷ (0.22m × 0.07m)</div>
+                        <div class="formula">Cement (bags) = Wall Area × 0.03m × (1/5) × 28.8 bags/m³</div>
+                        <div class="formula">Sand (ela) = Wall Area × 0.03m × (4/5) ÷ 1.308</div>
+                        <p class="note">Assumes 230mm × 70mm brick, 30mm mortar thickness, 1:4 cement:sand ratio. 1m³ cement = 28.8 bags (1440kg ÷ 50kg).</p>
+                        <h4 style="margin-top:10px;">Plastering</h4>
+                        <div class="formula">Cement (bags) = Wall Area × 0.019m × (1/5) × 28.8</div>
+                        <div class="formula">Sand (ela) = Wall Area × 0.019m × (4/5) ÷ 1.308</div>
+                        <p class="note">Plaster thickness assumed at 19mm with same 1:4 mix ratio.</p>
+                    </div>
+                    <div class="form-group">
+                        <label for="wallLength">Wall Length (m):</label>
+                        <input type="number" id="wallLength" step="0.01" placeholder="Enter wall length">
+                    </div>
+                    <div class="form-group">
+                        <label for="wallHeight">Wall Height (m):</label>
+                        <input type="number" id="wallHeight" step="0.01" placeholder="Enter wall height">
+                    </div>
+                    <div class="form-group">
+                        <label for="windowLength">Window Length (m):</label>
+                        <input type="number" id="windowLength" step="0.01" placeholder="Enter window length">
+                    </div>
+                    <div class="form-group">
+                        <label for="windowHeight">Window Height (m):</label>
+                        <input type="number" id="windowHeight" step="0.01" placeholder="Enter window height">
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn-calculate" onclick="calculateWall()">Calculate</button>
+                        <button class="btn-reset" onclick="resetWall()">Reset</button>
+                    </div>
+                    <div class="result-box" id="wallResult"></div>
+                </div>
+
+                <!-- Floor Section -->
+                <div class="card">
+                    <h2>Floor Tile Calculation <button class="info-toggle" onclick="toggleInfo('floorInfo')">Formula</button></h2>
+                    <div class="info-panel" id="floorInfo">
+                        <h4>Tile Estimation</h4>
+                        <div class="formula">Tiles Needed = Floor Area ÷ (0.3m × 0.3m)</div>
+                        <p class="note">Standard tile size 300mm × 300mm (1ft). For 600mm tiles, divide by 2 pieces.</p>
+                        <h4 style="margin-top:10px;">Mortar Bed</h4>
+                        <div class="formula">Cement (bags) = Floor Area × 0.02m × (1/5) × 28.8</div>
+                        <div class="formula">Sand (ela) = Floor Area × 0.02m × (4/5) ÷ 1.308</div>
+                        <p class="note">Mortar bed thickness: 20mm. 1:4 cement-sand mix.</p>
+                        <h4 style="margin-top:10px;">Adhesive</h4>
+                        <div class="formula">Adhesive Cement = Floor Area × 0.005m × (1440 ÷ 25)</div>
+                        <p class="note">Adhesive bed thickness: 5mm. Uses 25kg adhesive bags.</p>
+                    </div>
+                    <div class="form-group">
+                        <label for="floorLength">Floor Length (m):</label>
+                        <input type="number" id="floorLength" step="0.01" placeholder="Enter floor length">
+                    </div>
+                    <div class="form-group">
+                        <label for="floorWidth">Floor Width (m):</label>
+                        <input type="number" id="floorWidth" step="0.01" placeholder="Enter floor width">
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn-calculate" onclick="calculateFloor()">Calculate</button>
+                        <button class="btn-reset" onclick="resetFloor()">Reset</button>
+                    </div>
+                    <div class="result-box" id="floorResult"></div>
+                </div>
+
+                <!-- Concrete Section -->
+                <div class="card">
+                    <h2>Concrete Calculation <button class="info-toggle" onclick="toggleInfo('concreteInfo')">Formula</button></h2>
+                    <div class="info-panel" id="concreteInfo">
+                        <h4>Volume</h4>
+                        <div class="formula">Volume = Length × Width × Height (m³)</div>
+                        <h4 style="margin-top:10px;">Manual Mix (1:2:2 ratio)</h4>
+                        <div class="formula">Cement = Volume × (1/7) × 28.25 bags</div>
+                        <div class="formula">Sand (ela) = Volume × (2/7) ÷ 1.308</div>
+                        <div class="formula">Aggregate (m³) = Volume × (2/7)</div>
+                        <div class="formula">BRC = Area ÷ (2.2m × 6m)</div>
+                        <p class="note">1:2:2 concrete mix. 1 bag = 28.25 units. BRC standard size 2.2m × 6m. Prices per unit in RM.</p>
+                        <h4 style="margin-top:10px;">Ready-mix Alternative</h4>
+                        <div class="formula">Ready-mix Cost = Volume × RM 300/m³</div>
+                        <p class="note">Use lorri gred 25 ready-mix as benchmark.</p>
+                    </div>
+                    <div class="form-group">
+                        <label for="concLength">Length (m):</label>
+                        <input type="number" id="concLength" step="0.01" placeholder="Enter length">
+                    </div>
+                    <div class="form-group">
+                        <label for="concWidth">Width (m):</label>
+                        <input type="number" id="concWidth" step="0.01" placeholder="Enter width">
+                    </div>
+                    <div class="form-group">
+                        <label for="concHeight">Height (m):</label>
+                        <input type="number" id="concHeight" step="0.01" placeholder="Enter height">
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn-calculate" onclick="calculateConcrete()">Calculate</button>
+                        <button class="btn-reset" onclick="resetConcrete()">Reset</button>
+                    </div>
+                    <div class="result-box" id="concreteResult"></div>
+                </div>
+
+                <!-- Paint Section -->
+                <div class="card">
+                    <h2>Paint Calculation <button class="info-toggle" onclick="toggleInfo('paintInfo')">Formula</button></h2>
+                    <div class="info-panel" id="paintInfo">
+                        <h4>Coverage Rates (per litre)</h4>
+                        <div class="formula">Nippon EasyWash / Court: 107 sq ft / litre</div>
+                        <div class="formula">Dulux EasyClean: 124 sq ft / litre</div>
+                        <div class="formula">Jotun Essence: 113 sq ft / litre</div>
+                        <p class="note">Coverage based on 2-coat application on primed walls.</p>
+                        <h4 style="margin-top:10px;">Calculations</h4>
+                        <div class="formula">Sealer = Surface Area ÷ Coverage Rate</div>
+                        <div class="formula">Paint = (Surface Area × Coats) ÷ Coverage Rate</div>
+                        <p class="note">Sealer/primer assumed as 1 coat regardless of paint coats.</p>
+                    </div>
+                    <div class="form-group">
+                        <label for="paintLength">Wall Length (ft):</label>
+                        <input type="number" id="paintLength" step="0.01" placeholder="Enter wall length">
+                    </div>
+                    <div class="form-group">
+                        <label for="paintHeight">Wall Height (ft):</label>
+                        <input type="number" id="paintHeight" step="0.01" placeholder="Enter wall height">
+                    </div>
+                    <div class="form-group">
+                        <label for="coats">Number of Coats:</label>
+                        <input type="number" id="coats" step="1" placeholder="Enter number of coats">
+                    </div>
+                    <div class="checkbox-group">
+                        <label><input type="checkbox" id="nippon" onchange="updatePaint()"> Nippon Paint</label>
+                        <label><input type="checkbox" id="dulux" onchange="updatePaint()"> Dulux Paint</label>
+                        <label><input type="checkbox" id="jotun" onchange="updatePaint()"> Jotun Paint</label>
+                        <label><input type="checkbox" id="nipponCourt" onchange="updatePaint()"> Nippon Court Paint</label>
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn-calculate" onclick="calculatePaint()">Calculate</button>
+                        <button class="btn-reset" onclick="resetPaint()">Reset</button>
+                    </div>
+                    <div class="result-box" id="paintResult"></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="section-materials" class="section" style="display:none;">
+            <div class="learn-section">
+                <h2><span class="icon">🧱</span> Material Reference Data</h2>
+                <p style="margin-bottom:15px;">Standard values used in all calculations below. Local variations exist — always verify with suppliers.</p>
+                <div class="material-grid">
+                    <div class="material-card">
+                        <h4>Cement (Portland)</h4>
+                        <p><b>Bulk Density:</b> 1440 kg/m³</p>
+                        <p><b>Bag Weight:</b> 50 kg</p>
+                        <p><b>Bags per m³:</b> 28.8 bags</p>
+                        <p><b>Price Ref:</b> RM 25/bag</p>
+                    </div>
+                    <div class="material-card">
+                        <h4>Sand (Fine Aggregate)</h4>
+                        <p><b>Conversion:</b> 1 ela = 1.308 m³</p>
+                        <p><b>Price Ref:</b> RM 100/ela</p>
+                    </div>
+                    <div class="material-card">
+                        <h4>Brick (Standard)</h4>
+                        <p><b>Size:</b> 230mm × 70mm × 100mm</p>
+                        <p><b>Face Area:</b> 0.22m × 0.07m = 0.0154 m²</p>
+                    </div>
+                    <div class="material-card">
+                        <h4>Tile</h4>
+                        <p><b>1ft Size:</b> 300mm × 300mm = 0.09 m²</p>
+                        <p><b>2ft Size:</b> 600mm × 600mm = 0.36 m²</p>
+                    </div>
+                    <div class="material-card">
+                        <h4>Adhesive Cement</h4>
+                        <p><b>Bag Weight:</b> 25 kg</p>
+                        <p><b>Bags per m³:</b> 57.6 bags</p>
+                    </div>
+                    <div class="material-card">
+                        <h4>Aggregate (Batu 3/4)</h4>
+                        <p><b>Price Ref:</b> RM 100/ela</p>
+                        <p><b>Mix Ratio:</b> 2 parts in 1:2:2 concrete</p>
+                    </div>
+                    <div class="material-card">
+                        <h4>BRC (Reinforcing Mesh)</h4>
+                        <p><b>Type:</b> A6 JKR Spec</p>
+                        <p><b>Size:</b> 2.2m × 6m</p>
+                        <p><b>Price Ref:</b> RM 100/unit</p>
+                    </div>
+                    <div class="material-card">
+                        <h4>Paint Coverage</h4>
+                        <p><b>Nippon:</b> 107 sq ft/litre</p>
+                        <p><b>Dulux:</b> 124 sq ft/litre</p>
+                        <p><b>Jotun:</b> 113 sq ft/litre</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="section-formulas" class="section" style="display:none;">
+            <div class="learn-section">
+                <h2><span class="icon">📐</span> Formula Reference Guide</h2>
+                <p style="margin-bottom:20px;">Detailed breakdown of every equation used in the calculators. Understanding these lets you adjust for site-specific conditions.</p>
+
+                <h3>WALL & PLASTER</h3>
+                <div class="formula">Gross Wall Area = Length × Height (m²)</div>
+                <div class="formula">Net Wall Area = Gross Area − Window Area (m²)</div>
+                <div class="formula">Brick Count = Net Area ÷ Brick Face Area</div>
+                <div class="formula">Cement Volume = Net Area × Mortar Thickness × Cement Fraction</div>
+                <div class="formula">Cement Bags = Cement Volume × Density ÷ Bag Weight</div>
+                <div class="formula">Sand Volume = Cement Volume × (Sand Fraction ÷ Cement Fraction)</div>
+                <div class="formula">Sand Ela = Sand Volume ÷ 1.308</div>
+
+                <h3 style="margin-top:20px;">FLOOR TILES</h3>
+                <div class="formula">Tile Count = Floor Area ÷ Single Tile Area</div>
+                <div class="formula">Mortar Cement Bags = Floor Area × Bed Thickness × Cement Fraction × Density</div>
+                <div class="formula">Adhesive Cement = Floor Area × Adh Thickness × Density ÷ Adh Bag Weight</div>
+
+                <h3 style="margin-top:20px;">CONCRETE</h3>
+                <div class="formula">Concrete Volume = L × W × H (m³)</div>
+                <div class="formula">Cement Bags = Volume × (Cement Ratio ÷ Total Ratio) × Bags per m³</div>
+                <div class="formula">Sand / Aggregate = Volume × Material Ratio</div>
+                <div class="formula">BRC Quantity = Slab Area ÷ (2.2m × 6m)</div>
+                <div class="formula">Total Cost = Σ(Quantity × Unit Price)</div>
+
+                <h3 style="margin-top:20px;">PAINT</h3>
+                <div class="formula">Surface Area = Wall Length × Wall Height (sq ft)</div>
+                <div class="formula">Sealer Litres = Surface Area ÷ Coverage Rate</div>
+                <div class="formula">Paint Litres = (Surface Area × Coats) ÷ Coverage Rate</div>
+
+                <div class="note" style="margin-top:20px;">
+                    <b>Tip:</b> Add 5&ndash;10% overrun to all material quantities for wastage, breakage, and irregular surfaces in real construction sites.
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            Construction Material Calculator &copy; 2024. Educational tool for contractors, builders, and DIY enthusiasts. Deployed on GitHub Pages.
+        </footer>
+    </div>
+
+    <script>
+        const MATERIAL_CONSTANTS = {
+            cementDensity: 1440,
+            bagWeight: 50,
+            elaToM3: 1.308,
+            cementBagPerM3: 1440 / 50
+        };
+
+        function showSection(section) {
+            document.querySelectorAll('.section').forEach(s => s.style.display = 'none');
+            document.getElementById('section-' + section).style.display = 'block';
+            document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+
+        function toggleInfo(id) {
+            const panel = document.getElementById(id);
+            panel.classList.toggle('active');
+        }
+
+        function calculateWall() {
+            const length = parseFloat(document.getElementById('wallLength').value);
+            const height = parseFloat(document.getElementById('wallHeight').value);
+            const windowLength = parseFloat(document.getElementById('windowLength').value) || 0;
+            const windowHeight = parseFloat(document.getElementById('windowHeight').value) || 0;
+
+            if (isNaN(length) || isNaN(height) || length <= 0 || height <= 0) {
+                document.getElementById('wallResult').innerHTML = '<span class="result-title">Error:</span> Length and height must be greater than zero.';
+                return;
+            }
+
+            const c = MATERIAL_CONSTANTS;
+            const wallArea = length * height;
+            const windowArea = windowLength * windowHeight;
+            const totalArea = wallArea - windowArea;
+
+            const brickArea = 0.22 * 0.07;
+            const bricks = totalArea / brickArea;
+
+            const cementVolume = totalArea * 0.03 * (1 / 5);
+            const cementBags = cementVolume * c.cementBagPerM3;
+            const sandVolume = totalArea * 0.03 * (4 / 5);
+            const sandEla = sandVolume / c.elaToM3;
+
+            const plasterMortar = totalArea * 0.019;
+            const plasterCementBags = plasterMortar * (1 / 5) * c.cementBagPerM3;
+            const plasterSandEla = plasterMortar * (4 / 5) / c.elaToM3;
+
+            const resultText = 
+                `Wall Area: ${wallArea.toFixed(2)} m²\n` +
+                `Window Area: ${windowArea.toFixed(2)} m²\n` +
+                `Total Area: ${totalArea.toFixed(2)} m²\n\n` +
+                `--- Wall Construction ---\n` +
+                `Bricks Needed: ${Math.floor(bricks)}\n` +
+                `Cement: ${cementBags.toFixed(2)} bags\n` +
+                `Sand: ${sandEla.toFixed(2)} ela\n\n` +
+                `--- Plastering ---\n` +
+                `Cement: ${plasterCementBags.toFixed(2)} bags\n` +
+                `Sand: ${plasterSandEla.toFixed(2)} ela`;
+
+            document.getElementById('wallResult').innerHTML = `<span class="result-title">Results:</span>\n${resultText}`;
+        }
+
+        function calculateFloor() {
+            const length = parseFloat(document.getElementById('floorLength').value);
+            const width = parseFloat(document.getElementById('floorWidth').value);
+
+            if (isNaN(length) || isNaN(width) || length <= 0 || width <= 0) {
+                document.getElementById('floorResult').innerHTML = '<span class="result-title">Error:</span> Length and width must be greater than zero.';
+                return;
+            }
+
+            const c = MATERIAL_CONSTANTS;
+            const area = length * width;
+            const tileArea = 0.3 * 0.3;
+            const tiles = area / tileArea;
+            const mortarBed = area * 0.02;
+            const simenMortarBags = mortarBed * (1 / 5) * c.cementBagPerM3;
+            const sandMortarEla = (mortarBed * (4 / 5)) / c.elaToM3;
+            const adhesiveCementBags = (area * 0.005) * (c.cementDensity / 25);
+
+            const resultText = 
+                `Floor Area: ${area.toFixed(2)} m²\n` +
+                `Tiles Needed (1ft): ${Math.floor(tiles)}\n` +
+                `Tiles Needed (2ft): ${Math.floor(tiles / 2)}\n\n` +
+                `Cement: ${simenMortarBags.toFixed(2)} bags\n` +
+                `Sand: ${sandMortarEla.toFixed(2)} ela\n` +
+                `Adhesive Cement: ${adhesiveCementBags.toFixed(2)} bags`;
+
+            document.getElementById('floorResult').innerHTML = `<span class="result-title">Results:</span>\n${resultText}`;
+        }
+
+        function calculateConcrete() {
+            const length = parseFloat(document.getElementById('concLength').value);
+            const width = parseFloat(document.getElementById('concWidth').value);
+            const height = parseFloat(document.getElementById('concHeight').value);
+
+            if (isNaN(length) || isNaN(width) || isNaN(height) || length <= 0 || width <= 0 || height <= 0) {
+                document.getElementById('concreteResult').innerHTML = '<span class="result-title">Error:</span> Length, width, and height must be &gt; 0.';
+                return;
+            }
+
+            const cementRatio = 1/7;
+            const sandRatio = 2/7;
+            const aggRatio = 2/7;
+            const prices = {concrete: 300, cement: 25, sand: 100, batu: 100, brc: 100};
+            const area = length * width;
+            const volume = length * width * height;
+
+            const cementBags = volume * cementRatio * 28.25;
+            const sandEla = (volume * sandRatio) / 1.308;
+            const aggVol = volume * aggRatio;
+            const brcQty = area / (2.2 * 6);
+
+            const total = cementBags*prices.cement + sandEla*prices.sand + aggVol*prices.batu + brcQty*prices.brc;
+            const readymix = volume * prices.concrete;
+
+            const resultText = 
+                `Total Volume: ${volume.toFixed(2)} m³\n\n` +
+                `Ready-mix Price: RM ${readymix.toFixed(2)}\n\n` +
+                `--- Manual Mix ---\n` +
+                `Cement: ${cementBags.toFixed(2)} bags (RM ${(cementBags*prices.cement).toFixed(2)})\n` +
+                `Sand: ${sandEla.toFixed(2)} ela (RM ${(sandEla*prices.sand).toFixed(2)})\n` +
+                `Aggregate: ${aggVol.toFixed(2)} m³ (RM ${(aggVol*prices.batu).toFixed(2)})\n` +
+                `BRC: ${brcQty.toFixed(2)} unit (RM ${(brcQty*prices.brc).toFixed(2)})\n\n` +
+                `Grand Total: RM ${total.toFixed(2)}`;
+
+            document.getElementById('concreteResult').innerHTML = `<span class="result-title">Results:</span>\n${resultText}`;
+        }
+
+        let paintCov = 107;
+
+        function updatePaint() {
+            const nippon = document.getElementById('nippon').checked;
+            const dulux = document.getElementById('dulux').checked;
+            const jotun = document.getElementById('jotun').checked;
+            const nipponCourt = document.getElementById('nipponCourt').checked;
+
+            if (dulux) {
+                paintCov = 124;
+            } else if (jotun) {
+                paintCov = 113;
+            } else if (nippon || nipponCourt) {
+                paintCov = 107;
+            } else {
+                paintCov = 107;
+            }
+        }
+
+        function calculatePaint() {
+            const length = parseFloat(document.getElementById('paintLength').value);
+            const height = parseFloat(document.getElementById('paintHeight').value);
+            const coats = parseFloat(document.getElementById('coats').value);
+
+            if (isNaN(length) || isNaN(height) || isNaN(coats) || length <= 0 || height <= 0 || coats <= 0) {
+                document.getElementById('paintResult').innerHTML = '<span class="result-title">Error:</span> Values must be greater than zero.';
+                return;
+            }
+
+            const area = length * height;
+            const sealer = area / paintCov;
+            const paint = (area * coats) / paintCov;
+
+            const resultText = 
+                `Surface Area: ${area.toFixed(2)} sq ft\n` +
+                `Sealer Needed: ${sealer.toFixed(2)} litres\n` +
+                `Paint Needed (${Math.floor(coats)} coats): ${paint.toFixed(2)} litres`;
+
+            document.getElementById('paintResult').innerHTML = `<span class="result-title">Results:</span>\n${resultText}`;
+        }
+
+        function resetWall() {
+            document.getElementById('wallLength').value = '';
+            document.getElementById('wallHeight').value = '';
+            document.getElementById('windowLength').value = '';
+            document.getElementById('windowHeight').value = '';
+            document.getElementById('wallResult').innerHTML = '';
+        }
+
+        function resetFloor() {
+            document.getElementById('floorLength').value = '';
+            document.getElementById('floorWidth').value = '';
+            document.getElementById('floorResult').innerHTML = '';
+        }
+
+        function resetConcrete() {
+            document.getElementById('concLength').value = '';
+            document.getElementById('concWidth').value = '';
+            document.getElementById('concHeight').value = '';
+            document.getElementById('concreteResult').innerHTML = '';
+        }
+
+        function resetPaint() {
+            document.getElementById('paintLength').value = '';
+            document.getElementById('paintHeight').value = '';
+            document.getElementById('coats').value = '';
+            document.getElementById('nippon').checked = false;
+            document.getElementById('dulux').checked = false;
+            document.getElementById('jotun').checked = false;
+            document.getElementById('nipponCourt').checked = false;
+            paintCov = 107;
+            document.getElementById('paintResult').innerHTML = '';
+        }
+    </script>
+</body>
+</html>
