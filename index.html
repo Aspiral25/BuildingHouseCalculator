@@ -381,10 +381,16 @@
             color: white;
         }
 
-        .lang-btn {
+        .header-buttons {
             position: absolute;
             top: 20px;
             right: 20px;
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .lang-btn {
             padding: 8px 16px;
             background: #3498db;
             color: white;
@@ -399,6 +405,32 @@
         .lang-btn:hover {
             background: #2980b9;
         }
+
+        .kofi-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            background: #ff5e5b;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            flex: none;
+        }
+
+        .kofi-btn:hover {
+            background: #e04440;
+        }
+
+        .kofi-btn img {
+            height: 16px;
+            width: auto;
+        }
     </style>
 </head>
 <body>
@@ -412,7 +444,10 @@
                 <span class="tag" data-key="tag-costing">Kos</span>
                 <span class="tag" data-key="tag-diy">DIY</span>
             </div>
-            <button id="langToggle" class="lang-btn" onclick="toggleLanguage()">EN</button>
+            <div class="header-buttons">
+                <a href="https://ko-fi.com/nsdotmy" target="_blank" class="kofi-btn" data-key="kofi-btn">&#9749; Belanja Kopi</a>
+                <button id="langToggle" class="lang-btn" onclick="toggleLanguage()">EN</button>
+            </div>
         </header>
 
         <div class="nav-tabs">
@@ -702,6 +737,7 @@
                 'tag-materials': 'Bahan',
                 'tag-costing': 'Kos',
                 'tag-diy': 'DIY',
+                'kofi-btn': '&#9749; Belanja Kopi',
                 // Nav
                 'nav-calculators': 'Kalkulator',
                 'nav-materials': 'Data Bahan',
@@ -901,6 +937,7 @@
                 'tag-materials': 'Materials',
                 'tag-costing': 'Costing',
                 'tag-diy': 'DIY',
+                'kofi-btn': '&#9749; Buy Me a Coffee',
                 // Nav
                 'nav-calculators': 'Calculators',
                 'nav-materials': 'Material Data',
