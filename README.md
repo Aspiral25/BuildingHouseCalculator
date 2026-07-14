@@ -1,6 +1,11 @@
-# Construction Material Calculator
+# UniversalGuy Dev Hub
 
-A web-based and desktop tool to estimate construction materials for **walls, flooring, concrete, and paint**. 
+A central portfolio hub for my web tools, with documentation and live demos. The flagship project is the **Construction Material Calculator**.
+
+## Projects
+
+- **Construction Material Calculator** — `calculator.html` — estimates construction materials for **walls, flooring, concrete, and paint**.
+- **Regex Playground** — browser-based regular expression tester (coming soon).
 
 ## Features
 
@@ -20,7 +25,7 @@ A web-based and desktop tool to estimate construction materials for **walls, flo
 
 ## Tech Stack
 - **Frontend**: HTML5, CSS3 (responsive grid), vanilla JavaScript
-- **Deployment**: GitHub Pages ready — just push `index.html`
+- **Deployment**: GitHub Pages ready — `index.html` is the Dev Hub landing page; `calculator.html` is the embedded calculator.
 
 ## Getting Started
 
@@ -61,7 +66,7 @@ All calculations follow standard construction mix ratios and material constants:
 For a full breakdown, open the web app and switch to the **Formula Guide** and **Material Data** tabs.
 
 ## Screenshots / Live Demo
-*(https://aspiral25.github.io/BuildingHouseCalculator/)*
+*(Deployed via GitHub Pages — `index.html` is the Dev Hub; open the Construction Calculator card's "Live App" tab for the calculator.)*
 
 ## Contributing
 Contributions are welcome — feel free to open issues or submit PRs for new material types, regions, or additional estimators.
