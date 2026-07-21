@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Faraid Calculator</title>
+    <!-- Lightweight Fraction Library for exact Islamic math -->
+    <script src="https://cdn.jsdelivr.net/npm/fraction.js@4.3.4/fraction.min.js">
+    </script>
+    
+    <style>
+        /* Scoped styles to prevent overriding your main website */
+        .faraid-wrapper {
+            --faraid-bg: #f2f9f5;
+            --faraid-card-bg: #ffffff;
+            --faraid-text: #333;
+            --faraid-primary: #2b7a64;
+            --faraid-border: #d0e3da;
+            
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--faraid-bg);
+            color: var(--faraid-text);
+            padding: 20px;
+            box-sizing: border-box;
+            border-radius: 12px;
+        }
+
+        .faraid-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .faraid-header h1 {
+            color: #1a4a3c;
+            margin: 0 0 10px 0;
+        }
+
+        .faraid-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            align-items: flex-start;
+        }
+
+        .faraid-card {
+            background: var(--faraid-card-bg);
+            border: 1px solid var(--faraid-border);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .faraid-input-group {
+            margin-bottom: 15px;
+        }
+
+        .faraid-input-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            font-size: 0.9em;
+        }
+
+        .faraid-input-group input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            box-sizing: border-box;
+        }
+
+        .faraid-checkbox-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .faraid-btn {
+            background-color: var(--faraid-primary);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 12px;
+            width: 100%;
+            font-size: 1.05em;
+            cursor: pointer;
+            transition: opacity 0.2s;
+            font-weight: bold;
+        }
+
+        .faraid-btn:hover {
+            opacity: 0.9;
+        }
+
+        /* Tree Visualization Styles */
+        .faraid-tree-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .faraid-node {
+            display: flex;
+            align-items: center;
+            border: 2px solid var(--faraid-border);
+            border-radius: 10px;
+            padding: 12px 20px;
+            background: white;
+            width: 80%;
+            justify-content: space-between;
+        }
+
+        .faraid-node.central {
+            background-color: #e6f2ec;
+            border-color: var(--faraid-primary);
+            font-size: 1.1em;
+            font-weight: bold;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        .faraid-node-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .faraid-fraction {
+            color: var(--faraid-primary);
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+        
+        .faraid-value {
+            font-weight: bold;
+        }
+
+        .faraid-total-distributed {
+            margin-top: 20px;
+            text-align: right;
+            font-weight: bold;
+            font-size: 1.1em;
+            color: var(--faraid-primary);
+        }
+    </style>
+</head>
+<body>
+
+<div class="faraid-wrapper">
+    <div class="faraid-header">
+        <h1>Faraid Calculator</h1>
+        <p>Accurate & Syariah-Compliant Estate Distribution</p>
+    </div>
+
+    <div class="faraid-container">
+        <!-- LEFT PANEL: Inputs -->
+        <div class="faraid-card">
+            <h3>1. Estate Details</h3>
+            <form id="faraidForm">
+                <div class="faraid-input-group">
+                    <label>Gross Estate (RM)</label>
+                    <input type="number" id="grossEstate" placeholder="0.00" required>
+                </div>
+                <div class="faraid-input-group">
+                    <label>Funeral Expenses (RM)</label>
+                    <input type="number" id="funeralExpenses" placeholder="0.00" value="0">
+                </div>
+                <div class="faraid-input-group">
+                    <label>Debts (RM)</label>
+                    <input type="number" id="debts" placeholder="0.00" value="0">
+                </div>
+                
+                <h3>2. Add Heirs</h3>
+                <div class="faraid-checkbox-grid">
+                    <label><input type="checkbox" id="hasMother"> Mother</label>
+                    <label><input type="checkbox" id="hasFather"> Father</label>
+                    <label><input type="checkbox" id="hasWife"> Wife</label>
+                </div>
+                
+                <div class="faraid-checkbox-grid">
+                    <div class="faraid-input-group">
+                        <label>Sons</label>
+                        <input type="number" id="sonCount" min="0" value="0">
+                    </div>
+                    <div class="faraid-input-group">
+                        <label>Daughters</label>
+                        <input type="number" id="daughterCount" min="0" value="0">
+                    </div>
+                </div>
+                
+                <button type="submit" class="faraid-btn">Calculate Distribution</button>
+            </form>
+        </div>
+
+        <!-- RIGHT PANEL: Output Visualization -->
+        <div class="faraid-card" style="flex: 1.5;">
+            <h3>Faraid Distribution Breakdown</h3>
+            <div id="faraidOutput" class="faraid-tree-container">
+                <p style="color: #777;">Enter estate details and heirs, then click Calculate to see the exact breakdown.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    if (typeof Fraction === 'undefined') {
+        document.getElementById('faraidOutput').innerHTML =
+            '<p style="color:red;">Error: Required library (fraction.js) failed to load. Please check your internet connection and reload.</p>';
+    } else {
+        document.getElementById('faraidForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        console.log("DEBUG: Form submitted, starting Faraid calculation...");
+        
+        try {
+            // 1. Get financial inputs
+            const gross = parseFloat(document.getElementById('grossEstate').value) || 0;
+            const funeral = parseFloat(document.getElementById('funeralExpenses').value) || 0;
+            const debts = parseFloat(document.getElementById('debts').value) || 0;
+            
+            const nettEstate = gross - funeral - debts;
+            console.log("DEBUG: Nett Estate calculated as RM", nettEstate);
+
+            if (nettEstate < 0) {
+                alert("Liabilities exceed Gross Estate. No Faraid distribution possible.");
+                return;
+            }
+
+            // 2. Get heir inputs
+            const hasMother = document.getElementById('hasMother').checked;
+            const hasFather = document.getElementById('hasFather').checked;
+            const hasWife = document.getElementById('hasWife').checked;
+            const sons = parseInt(document.getElementById('sonCount').value) || 0;
+            const daughters = parseInt(document.getElementById('daughterCount').value) || 0;
+            const hasChildren = (sons > 0 || daughters > 0);
+
+            // 3. Mathematical Logic 
+            let distributions = [];
+            let totalFixedFractions = new Fraction(0);
+
+            if (hasWife) {
+                let share = hasChildren ? new Fraction(1, 8) : new Fraction(1, 4);
+                totalFixedFractions = totalFixedFractions.add(share);
+                distributions.push({ name: 'Wife', fraction: share.toFraction(true), val: nettEstate * share.valueOf() });
+            }
+
+            if (hasMother) {
+                let share = hasChildren ? new Fraction(1, 6) : new Fraction(1, 3);
+                totalFixedFractions = totalFixedFractions.add(share);
+                distributions.push({ name: 'Mother', fraction: share.toFraction(true), val: nettEstate * share.valueOf() });
+            }
+            
+            if (hasFather) {
+                let share = hasChildren ? new Fraction(1, 6) : new Fraction(0); 
+                totalFixedFractions = totalFixedFractions.add(share);
+                distributions.push({ name: 'Father', fraction: share.toFraction(true), val: nettEstate * share.valueOf() });
+            }
+
+            // Asabah (Remainder) for Children
+            let remainderFraction = new Fraction(1).sub(totalFixedFractions);
+            let remainderValue = nettEstate * remainderFraction.valueOf();
+            console.log("DEBUG: Remainder value for Asabah RM", remainderValue);
+
+            if (hasChildren && remainderFraction.valueOf() > 0) {
+                let totalChildParts = (sons * 2) + daughters;
+                let valuePerPart = remainderValue / totalChildParts;
+                let fractionPerPart = remainderFraction.div(totalChildParts);
+
+                if (sons > 0) {
+                    let sonFraction = fractionPerPart.mul(2);
+                    distributions.push({ 
+                        name: `Sons (${sons})`, 
+                        fraction: `${sonFraction.toFraction(true)} each`, 
+                        val: valuePerPart * 2 * sons 
+                    });
+                }
+                if (daughters > 0) {
+                    distributions.push({ 
+                        name: `Daughters (${daughters})`, 
+                        fraction: `${fractionPerPart.toFraction(true)} each`, 
+                        val: valuePerPart * daughters 
+                    });
+                }
+            }
+
+            // 4. Render HTML Output
+            const outputDiv = document.getElementById('faraidOutput');
+            let htmlContent = `
+                <div class="faraid-node central">
+                    <span>NETT ESTATE VALUE</span>
+                    <span class="faraid-value">RM ${nettEstate.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</span>
+                </div>
+            `;
+
+            let distributedTotal = 0;
+
+            distributions.forEach(d => {
+                if(d.val > 0) {
+                    distributedTotal += d.val;
+                    htmlContent += `
+                        <div class="faraid-node">
+                            <div class="faraid-node-info">
+                                <strong>${d.name}</strong>
+                                <span class="faraid-fraction">${d.fraction}</span>
+                            </div>
+                            <div class="faraid-value">RM ${d.val.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</div>
+                        </div>
+                    `;
+                }
+            });
+
+            htmlContent += `
+                <div class="faraid-total-distributed">
+                    Total Distributed: RM ${distributedTotal.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}
+                </div>
+            `;
+
+            outputDiv.innerHTML = htmlContent;
+            console.log("DEBUG: Rendering complete.");
+
+        } catch (error) {
+            console.error("DEBUG: A calculation error occurred: ", error);
+            alert("An error occurred during calculation. Check the browser console for details.");
+        }
+    });
+}
+</script>
+
+</body>
+</html>

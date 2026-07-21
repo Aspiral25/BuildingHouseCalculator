@@ -824,6 +824,32 @@
         },
         iframeSrc: 'about:blank',
         hasIframe: true
+      },
+      {
+        id: 'faraid-calculator',
+        label: 'Faraid Calculator',
+        section: 'Tools',
+        docs: {
+          title: 'Faraid Calculator',
+          description: 'An accurate and Syariah-compliant Islamic inheritance calculator. Enter estate details and heirs to get exact distribution breakdown with fraction-precision mathematics.',
+          techStack: ['HTML5', 'CSS3', 'JavaScript', 'Fraction.js'],
+          features: [
+            'Estate net calculation after funeral expenses and debts',
+            'Fixed-share heirs: Wife (1/8 with children, 1/4 without), Mother (1/6 with children, 1/3 without)',
+            'Residuary (Asabah) distribution for children with 2:1 son-to-daughter ratio',
+            'Visual tree breakdown showing each heir\'s fraction and exact RM value'
+          ],
+          formulas: [
+            'Net Estate = Gross Estate - Funeral Expenses - Debts',
+            'Wife: 1/8 (with children) or 1/4 (without children)',
+            'Mother: 1/6 (with children) or 1/3 (without children)',
+            'Father: 1/6 (with children) - simplified fixed share',
+            'Children share remainder by 2:1 ratio (son : daughter)'
+          ],
+          notes: 'Uses Fraction.js for exact Islamic mathematics without floating-point rounding errors. This is a simplified demo version; consult a qualified Syariah practitioner for real-world estate distribution.'
+        },
+        iframeSrc: 'faraid.html',
+        hasIframe: true
       }
     ];
 
@@ -899,6 +925,7 @@
           <div class="home-cta">
             <button class="btn-primary" onclick="loadProject(0)">Explore Construction Calculator →</button>
             <button class="btn-secondary" onclick="loadProject(1)">Try Regex Playground →</button>
+            <button class="btn-secondary" onclick="loadProject(2)">Try Faraid Calculator →</button>
           </div>
         </div>
         <div class="projects-grid">
