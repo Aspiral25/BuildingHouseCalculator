@@ -110,3 +110,13 @@ Contributions are welcome — feel free to open issues or submit PRs for new mat
 
 ## License
 MIT License. Free for personal and commercial use.
+
+---
+
+## Support
+
+If you found this tool useful, consider buying me a coffee:
+
+<a href="https://ko-fi.com/nsdotmy" target="_blank">
+  <img src="https://storage.ko-fi.com/cdn/kofi2.png" alt="Buy me a coffee" style="height: 60px;">
+</a>
